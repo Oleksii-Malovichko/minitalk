@@ -3,10 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   file.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
+<<<<<<< HEAD
 /*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 12:06:19 by alex              #+#    #+#             */
 /*   Updated: 2024/11/19 16:25:49 by omalovic         ###   ########.fr       */
+=======
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/18 12:06:19 by alex              #+#    #+#             */
+/*   Updated: 2024/11/18 12:09:28 by alex             ###   ########.fr       */
+>>>>>>> a9bf1e9daca069b9da09f10766d2e3ce81ae46c4
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +73,7 @@ char* base_binary(int value, int ch)
 	return ("NULL");
 }
 
+<<<<<<< HEAD
 #define START 0
 #define LEN_TRANSFER 4
 #define CHAR_TRANSFER 8
@@ -83,4 +91,9 @@ int main()
 	// printf("flag changed: %d, binary form: %s\n", flag, to_binary(flag));
 	// if ((flag |= 1 << 2) == LEN_TRANSFER)
 	// 	printf("Len transfer is going\n");
+=======
+int main()
+{
+	printf("%s\n", base_binary(123, 0));
+>>>>>>> a9bf1e9daca069b9da09f10766d2e3ce81ae46c4
 }
