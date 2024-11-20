@@ -6,7 +6,7 @@
 /*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 10:23:27 by alex              #+#    #+#             */
-/*   Updated: 2024/11/19 16:38:06 by omalovic         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:07:16 by omalovic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	handle_signal_len(int sig, siginfo_t *info, void *context)
 		flag = 0;
 		if (kill(client_pid, SIGUSR2) == -1)
 			exit(EXIT_FAILURE);
-		//
+		
 	}
 }
 
@@ -133,7 +133,7 @@ int main(void)
 	if ((flag |= 1 << 2) == LEN_TRANSFER)
 	{
 		sa.sa_sigaction = handle_signal_len;
-		sa.sa_flags = SA_SIGINFO;
+		sa.sa_flags = SA_SIGINFO;ŒŒ
 		sigemptyset(&sa.sa_mask);
 	}
 	if ((flag |= 1 << 2) == CHAR_TRANSFER)

@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 21:06:31 by alex              #+#    #+#             */
-/*   Updated: 2024/11/20 14:05:05 by omalovic         ###   ########.fr       */
+/*   Created: 2024/10/08 16:02:55 by omalovic          #+#    #+#             */
+/*   Updated: 2024/10/09 15:02:11 by omalovic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef SERVER_H
-#define SERVER_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <signal.h>
-# include <stdlib.h>
-
-typedef struct s_server_state
+int	ft_tolower(int c)
 {
-	int	flag;
-	int	bit_index;		// Текущий индекс бита
-	int	current_value;	// Собранное значение
-	int pid;
-} t_server_state;
+	if ('A' <= c && 'Z' >= c)
+	{
+		c += 32;
+	}
+	return (c);
+}
 
-typedef enum
+/* int main()
 {
-	WAIT_HANDSHAKE,
-	WAIT_DATA
-} t_server_mode;
-
-#endif
+	printf("%c\n", ft_tolower('['));
+	printf("%c\n", tolower('['));
+} */

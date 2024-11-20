@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 21:06:31 by alex              #+#    #+#             */
-/*   Updated: 2024/11/20 14:05:05 by omalovic         ###   ########.fr       */
+/*   Created: 2024/10/07 18:00:40 by omalovic          #+#    #+#             */
+/*   Updated: 2024/10/09 15:03:29 by omalovic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef SERVER_H
-#define SERVER_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <signal.h>
-# include <stdlib.h>
-
-typedef struct s_server_state
+int	ft_isascii(int c)
 {
-	int	flag;
-	int	bit_index;		// Текущий индекс бита
-	int	current_value;	// Собранное значение
-	int pid;
-} t_server_state;
+	if (0 <= c && c <= 0177)
+	{
+		return (1);
+	}
+	return (0);
+}
 
-typedef enum
+/* int main()
 {
-	WAIT_HANDSHAKE,
-	WAIT_DATA
-} t_server_mode;
-
-#endif
+    printf("%d\n", ft_isascii('0'));
+    printf("%d\n", isascii('0'));
+} */

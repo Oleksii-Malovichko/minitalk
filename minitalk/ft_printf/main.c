@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 21:06:31 by alex              #+#    #+#             */
-/*   Updated: 2024/11/20 14:05:05 by omalovic         ###   ########.fr       */
+/*   Created: 2024/10/16 13:27:44 by omalovic          #+#    #+#             */
+/*   Updated: 2024/10/22 14:21:55 by omalovic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef SERVER_H
-#define SERVER_H
+#include "ft_printf.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <signal.h>
-# include <stdlib.h>
-
-typedef struct s_server_state
+int	ft_printf(const char *str, ...)
 {
-	int	flag;
-	int	bit_index;		// Текущий индекс бита
-	int	current_value;	// Собранное значение
-	int pid;
-} t_server_state;
+	const char	*sym;
+	int			result;
+	va_list		args;
 
-typedef enum
+	sym = "cspdiuxX%";
+	va_start(args, str);
+	result = is_right_str(str, sym, args);
+	va_end(args);
+	return (result);
+}
+
+/* int main()
 {
-	WAIT_HANDSHAKE,
-	WAIT_DATA
-} t_server_mode;
-
-#endif
+	printf("%d\n", ft_printf("%d\n", 10));
+	printf("%d\n", printf("%d\n", 10));
+	// printf("%d\n", ft_printf("\001\002\007\v\010\f\r\n"));
+} */
