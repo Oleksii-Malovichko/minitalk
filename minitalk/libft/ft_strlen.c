@@ -1,35 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 21:06:31 by alex              #+#    #+#             */
-/*   Updated: 2024/11/20 14:05:05 by omalovic         ###   ########.fr       */
+/*   Created: 2024/10/07 18:21:35 by omalovic          #+#    #+#             */
+/*   Updated: 2024/10/09 15:02:30 by omalovic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef SERVER_H
-#define SERVER_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <signal.h>
-# include <stdlib.h>
-
-typedef struct s_server_state
+size_t	ft_strlen(const char *s)
 {
-	int	flag;
-	int	bit_index;		// Текущий индекс бита
-	int	current_value;	// Собранное значение
-	int pid;
-} t_server_state;
+	size_t	i;
 
-typedef enum
+	i = 0;
+	while (s[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
+
+/* int main(void)
 {
-	WAIT_HANDSHAKE,
-	WAIT_DATA
-} t_server_mode;
-
-#endif
+	printf("%zu\n", ft_strlen("000Hello1 ''223454321"));
+	printf("%lu\n", strlen("000Hello1 ''223454321"));
+	printf("%lu\n",sizeof (size_t)); // 8
+	printf("%lu\n",sizeof (int)); // 4 WTF???
+} */

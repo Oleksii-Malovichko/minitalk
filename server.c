@@ -6,7 +6,11 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 10:23:27 by alex              #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/11/19 20:13:12 by alex             ###   ########.fr       */
+=======
+/*   Updated: 2024/11/20 12:07:16 by omalovic         ###   ########.fr       */
+>>>>>>> f326d01667b7051385a1fe6526630803fff79602
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +62,7 @@ void	handle_signal_len(int sig, siginfo_t *info, void *context)
 		if (kill(client_pid, SIGUSR2) == -1) // после получения длины мы отправляем сигнал клиенту
 			exit(EXIT_FAILURE);
 		
+<<<<<<< HEAD
 		//
 		struct sigaction sa;
         sa.sa_sigaction = handle_signal_str;
@@ -65,6 +70,8 @@ void	handle_signal_len(int sig, siginfo_t *info, void *context)
         sigemptyset(&sa.sa_mask);
         if (sigaction(SIGUSR1, &sa, NULL) == -1 || sigaction(SIGUSR2, &sa, NULL) == -1)
             exit(EXIT_FAILURE);
+=======
+>>>>>>> f326d01667b7051385a1fe6526630803fff79602
 	}
 }
 
@@ -107,6 +114,38 @@ int main(void)
 	return (0);
 }
 
+<<<<<<< HEAD
+=======
+char	flag = 0;
+#define START 0
+#define LEN_TRANSFER 4
+#define CHAR_TRANSFER 8
+#define FINISH 16
+
+int main(void)
+{
+	struct sigaction sa;
+	printf("Server PID: %d\n", getpid());
+	if ((flag |= 1 << 2) == LEN_TRANSFER)
+	{
+		sa.sa_sigaction = handle_signal_len;
+		sa.sa_flags = SA_SIGINFO;ŒŒ
+		sigemptyset(&sa.sa_mask);
+	}
+	if ((flag |= 1 << 2) == CHAR_TRANSFER)
+	{
+		sa.sa_sigaction = handle_signal_str;
+		sa.sa_flags = SA_SIGINFO;
+		sigemptyset(&sa.sa_mask);
+	}
+	if (sigaction(SIGUSR1, &sa, NULL) == -1 || sigaction(SIGUSR2, &sa, NULL) == -1)
+		return (EXIT_FAILURE);
+	while (1)
+		pause();
+	return (0);
+}
+
+>>>>>>> f326d01667b7051385a1fe6526630803fff79602
 /* План
 
 что должно быть:

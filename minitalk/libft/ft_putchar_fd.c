@@ -1,35 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 21:06:31 by alex              #+#    #+#             */
-/*   Updated: 2024/11/20 14:05:05 by omalovic         ###   ########.fr       */
+/*   Created: 2024/10/10 17:35:12 by omalovic          #+#    #+#             */
+/*   Updated: 2024/10/10 18:08:15 by omalovic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef SERVER_H
-#define SERVER_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <signal.h>
-# include <stdlib.h>
-
-typedef struct s_server_state
+void	ft_putchar_fd(char c, int fd)
 {
-	int	flag;
-	int	bit_index;		// Текущий индекс бита
-	int	current_value;	// Собранное значение
-	int pid;
-} t_server_state;
+	write(fd, &c, 1);
+}
 
-typedef enum
+/* int main()
 {
-	WAIT_HANDSHAKE,
-	WAIT_DATA
-} t_server_mode;
-
-#endif
+	ft_putchar_fd('A', 1);
+	write(1, "\n", 1);
+} */

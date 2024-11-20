@@ -1,35 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/19 21:06:31 by alex              #+#    #+#             */
-/*   Updated: 2024/11/20 14:05:05 by omalovic         ###   ########.fr       */
+/*   Created: 2024/10/07 17:24:41 by omalovic          #+#    #+#             */
+/*   Updated: 2024/10/09 15:03:34 by omalovic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef SERVER_H
-#define SERVER_H
+#include "libft.h"
 
-# include <stdio.h>
-# include <unistd.h>
-# include <signal.h>
-# include <stdlib.h>
-
-typedef struct s_server_state
+int	ft_isalpha(int c)
 {
-	int	flag;
-	int	bit_index;		// Текущий индекс бита
-	int	current_value;	// Собранное значение
-	int pid;
-} t_server_state;
+	if ((65 <= c && c <= 90) || (97 <= c && c <= 122))
+	{
+		return (1);
+	}
+	return (0);
+}
 
-typedef enum
+/* int main()
 {
-	WAIT_HANDSHAKE,
-	WAIT_DATA
-} t_server_mode;
-
-#endif
+    printf("%d\n", ft_isalpha(65));
+    printf("%d\n", isalpha(65));
+} */
