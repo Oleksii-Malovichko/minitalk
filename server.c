@@ -3,74 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 10:23:27 by alex              #+#    #+#             */
-/*   Updated: 2024/11/19 16:38:06 by omalovic         ###   ########.fr       */
+/*   Updated: 2024/11/19 20:13:12 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
-
-void	ft_putchar(char ch)
-{
-	write(1, &ch, 1);
-}
-
-void handler(int signum)
-{
-	static int bit_count = 0;
-	static char byte = 0;
-	
-	if (bit_count == 8)
-	{
-		ft_putchar(byte);
-		bit_count = 0;
-		byte = 0;		
-	}
-	if (signum == SIGUSR1)
-	{
-		byte = byte << 1; // сдвиг влево, то есть установка нуля в конце
-	}
-	else if (signum == SIGUSR2)
-	{
-		byte = (byte << 1) | 1; // сдвиг влево и установка 1 в конце
-	}
-	bit_count++;
-}
-
-int main()
-{
-	printf("Server PID: %d\n", getpid());
-	struct sigaction sa;
-	sa.sa_handler = handler;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask); // очистили маски, так как мы не хотим блокировать никакие сигналы
-
-	sigaction(SIGUSR1, &sa, NULL); // те сигналы которые будут перехвачены и обработаны
-	sigaction(SIGUSR2, &sa, NULL);
-
-	while (1) {
-		pause();  // Ожидаем сигналы
-	}
-}
-
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/18 10:23:27 by alex              #+#    #+#             */
-/*   Updated: 2024/11/19 16:26:07 by omalovic         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+// int main(void)
+// {
+// 	struct sigaction sa;
+// 	printf("Server PID: %d\n", getpid());
+// 	sa.sa_sigaction = handle_signal_len;
+// 	sa.sa_flags = SA_SIGINFO;
+// 	sigemptyset(&sa.sa_mask);
+// 	if (sigaction(SIGUSR1, &sa, NULL) == -1 || sigaction(SIGUSR2, &sa, NULL) == -1)
+// 		return (EXIT_FAILURE);
+// 	while (1)
+// 		pause();
+// 	return (0);
+// }
 
 #include "server.h"
 
 // siginfo_t содержит pid клиента, подтверждение успешной передачи сигнала, детали о сигнале
 // context — это указатель на структуру, которая может содержать дополнительные данные о контексте выполнения, когда сигнал был обработан (но она не используется)
+
+void	handle_signal_len(int sig, siginfo_t *info, void *context);
+void	handle_signal_str(int sig, siginfo_t *info, void *context);
 
 void	handle_signal_len(int sig, siginfo_t *info, void *context)
 {
@@ -94,54 +54,52 @@ void	handle_signal_len(int sig, siginfo_t *info, void *context)
 		printf("Received int: %d\n", state->current_value);
 		free(state);
 		state = NULL;
-		flag = 0;
-		if (kill(client_pid, SIGUSR2) == -1)
+		sleep(1);
+		if (kill(client_pid, SIGUSR2) == -1) // после получения длины мы отправляем сигнал клиенту
 			exit(EXIT_FAILURE);
+		
 		//
+		struct sigaction sa;
+        sa.sa_sigaction = handle_signal_str;
+        sa.sa_flags = SA_SIGINFO;
+        sigemptyset(&sa.sa_mask);
+        if (sigaction(SIGUSR1, &sa, NULL) == -1 || sigaction(SIGUSR2, &sa, NULL) == -1)
+            exit(EXIT_FAILURE);
 	}
 }
 
-void	handle_signal_str(int sig)
+void	handle_signal_str(int sig, siginfo_t *info, void *context)
 {
-	
+	static int bit_count = 0;
+	static char value = 0;
+	pid_t	client_pid;
+
+	if (sig == SIGUSR2)
+		value |= (1 << bit_count);
+	bit_count++;
+	client_pid = info->si_pid;
+	if (bit_count == 8)
+	{
+		if (value == '\0')
+		{
+			if (kill(client_pid, SIGUSR2) == -1)
+				exit(EXIT_FAILURE);
+		}
+		else
+			write(1, &value, 1);
+		value = 0;
+		bit_count = 0;
+	}
 }
 
 int main(void)
 {
 	struct sigaction sa;
 	printf("Server PID: %d\n", getpid());
+
 	sa.sa_sigaction = handle_signal_len;
 	sa.sa_flags = SA_SIGINFO;
 	sigemptyset(&sa.sa_mask);
-	if (sigaction(SIGUSR1, &sa, NULL) == -1 || sigaction(SIGUSR2, &sa, NULL) == -1)
-		return (EXIT_FAILURE);
-	while (1)
-		pause();
-	return (0);
-}
-
-char	flag = 0;
-#define START 0
-#define LEN_TRANSFER 4
-#define CHAR_TRANSFER 8
-#define FINISH 16
-
-int main(void)
-{
-	struct sigaction sa;
-	printf("Server PID: %d\n", getpid());
-	if ((flag |= 1 << 2) == LEN_TRANSFER)
-	{
-		sa.sa_sigaction = handle_signal_len;
-		sa.sa_flags = SA_SIGINFO;
-		sigemptyset(&sa.sa_mask);
-	}
-	if ((flag |= 1 << 2) == CHAR_TRANSFER)
-	{
-		sa.sa_sigaction = handle_signal_str;
-		sa.sa_flags = SA_SIGINFO;
-		sigemptyset(&sa.sa_mask);
-	}
 	if (sigaction(SIGUSR1, &sa, NULL) == -1 || sigaction(SIGUSR2, &sa, NULL) == -1)
 		return (EXIT_FAILURE);
 	while (1)
