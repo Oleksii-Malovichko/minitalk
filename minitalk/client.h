@@ -17,6 +17,8 @@
 # include <unistd.h>
 # include <signal.h>
 # include <stdlib.h>
+# include "ft_printf.h"
+# include "libft.h"
 
 typedef struct s_server_state
 {

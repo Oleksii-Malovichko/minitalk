@@ -3,51 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 21:06:59 by alex              #+#    #+#             */
-/*   Updated: 2024/11/20 17:00:01 by omalovic         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:24:42 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
-#include "libft.h"
-#include "ft_printf.h"
 
 volatile int flag;
-
-/* int ft_atoi(const char *str)
-{
-    unsigned long num = 0;
-    int sign = 1;
-    size_t i = 0;
-
-    while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-        i++;
-    while (str[i] == '+' || str[i] == '-')
-    {
-        if (str[i] == '-')
-            sign = -sign;
-        i++;
-        break;
-    }
-    while (str[i] >= '0' && str[i] <= '9')
-    {
-        num = num * 10 + (str[i] - '0');
-        i++;
-    }
-    return ((int)(num * sign));
-}
-
-int ft_strlen(char *str)
-{
-    int i = 0;
-    while (str[i] != '\0')
-    {
-        i++;
-    }
-    return i;
-} */
 
 void	stop_programm(int i)
 {
@@ -115,6 +80,7 @@ void send_sig(int pid, char state)
 
 void	handler(int sig, siginfo_t *info, void *context)
 {
+	(void)context;
 	static t_server_state *state = NULL;
 	
 	if (state == NULL)

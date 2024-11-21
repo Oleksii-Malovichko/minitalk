@@ -14,12 +14,10 @@
 
 char	*ft_strnstr(char *haystack, char *needle, size_t len)
 {
-	size_t	needle_len;
 	size_t	i;
 	size_t	j;
 
 	i = 0;
-	needle_len = 0;
 	if (*needle == '\0')
 		return ((char *)haystack);
 	while (haystack[i] != '\0' && i < len)

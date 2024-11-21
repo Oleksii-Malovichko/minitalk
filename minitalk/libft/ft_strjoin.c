@@ -38,14 +38,12 @@ char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char			*result;
 	unsigned int	len_s;
-	unsigned int	index;
 	unsigned int	general_len;
 
 	if (!s1 || !s2)
 		return (NULL);
 	general_len = 0;
 	len_s = 0;
-	index = 0;
 	while (s1[len_s] != '\0')
 		len_s++;
 	while (s2[general_len] != '\0')

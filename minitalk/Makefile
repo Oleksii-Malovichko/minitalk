@@ -10,17 +10,16 @@ FT_PRINTF_DIR = ft_printf
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(FT_PRINTF_DIR)
 
-# Директория с исходниками
-SRC_DIR = src
+# Директория для объектных файлов
 OBJ_DIR = obj
 
 # Исходные файлы для client и server
-CLIENT_SRC = $(SRC_DIR)/client.c $(SRC_DIR)/client_utils.c
-SERVER_SRC = $(SRC_DIR)/server.c $(SRC_DIR)/server_utils.c
+CLIENT_SRC = client.c # client_utils.c (если есть)
+SERVER_SRC = server.c # server_utils.c (если есть)
 
 # Преобразуем исходники в объектные файлы
-CLIENT_OBJ = $(CLIENT_SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-SERVER_OBJ = $(SERVER_SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
+CLIENT_OBJ = $(CLIENT_SRC:%.c=$(OBJ_DIR)/%.o)
+SERVER_OBJ = $(SERVER_SRC:%.c=$(OBJ_DIR)/%.o)
 
 # Цель по умолчанию
 all: $(CLIENT_NAME) $(SERVER_NAME)
@@ -34,7 +33,7 @@ $(SERVER_NAME): $(SERVER_OBJ) $(LIBFT_DIR)/libft.a $(FT_PRINTF_DIR)/libftprintf.
 	$(CC) $(SERVER_OBJ) -L$(LIBFT_DIR) -lft -L$(FT_PRINTF_DIR) -lftprintf -o $(SERVER_NAME)
 
 # Компиляция объектных файлов
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 

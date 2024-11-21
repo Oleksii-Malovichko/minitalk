@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 21:07:08 by alex              #+#    #+#             */
-/*   Updated: 2024/11/20 15:48:29 by omalovic         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:30:00 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void send_sig(int pid, char state)
 
 void	handle_signal_handshake(int sig, siginfo_t *info, void *context)
 {
+	(void)context;
 	static t_server_state *state = NULL;
 	
 	if (state == NULL)
@@ -76,11 +77,12 @@ void	handle_signal_handshake(int sig, siginfo_t *info, void *context)
 		if (state->current_value == 2 && flag == 0)
 		{
 			flag = 1;
-			printf("Handshake completed\n");
+			// printf("Handshake completed\n");
 		}
 		if (state->current_value == '\0' && flag == 1)
 		{
-			printf("\nReceived all data. Cleaning up...\n");
+			// printf("\nReceived all data. Cleaning up...\n");
+			write(1, "\n", 1);
 			flag = 0;
 			free(state);
 			state = NULL;
@@ -97,7 +99,7 @@ int main(void)
 {
 	struct sigaction sa;
 	
-	printf("The pid: %d\n", getpid());
+	ft_printf("The pid: %d\n", getpid());
 	flag = 0;
 	sa.sa_sigaction = handle_signal_handshake;
 	sa.sa_flags = SA_SIGINFO;
