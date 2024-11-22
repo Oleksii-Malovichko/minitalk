@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 21:06:31 by alex              #+#    #+#             */
-/*   Updated: 2024/11/20 14:05:05 by omalovic         ###   ########.fr       */
+/*   Updated: 2024/11/22 11:25:58 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@
 # include <unistd.h>
 # include <signal.h>
 # include <stdlib.h>
-# include "ft_printf.h"
-# include "libft.h"
+# include "ft_printf/ft_printf.h"
+
+int	ft_atoi1(const char *str);
+void	*ft_calloc1(size_t count, size_t size);
 
 typedef struct s_server_state
 {

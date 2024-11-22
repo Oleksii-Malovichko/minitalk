@@ -6,7 +6,7 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 21:06:59 by alex              #+#    #+#             */
-/*   Updated: 2024/11/20 19:24:42 by alex             ###   ########.fr       */
+/*   Updated: 2024/11/22 11:24:53 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void send_bit(int pid, int bit)
         if (kill(pid, SIGUSR2) == -1)
             stop_programm(1);
     }
-    usleep(500);
+    usleep(300);
 }
 
 void send_char(int pid, char c)
@@ -85,7 +85,7 @@ void	handler(int sig, siginfo_t *info, void *context)
 	
 	if (state == NULL)
 	{
-		state = malloc(sizeof(t_server_state));
+		state = ft_calloc2(1, sizeof(t_server_state));
 		if (!state)
 			exit(EXIT_FAILURE);
 		state->bit_index = 0;
@@ -114,7 +114,7 @@ int main(int n, char *args[])
 		stop_programm(1);
 		return (1);
 	}
-	pid = ft_atoi(args[1]);
+	pid = ft_atoi2(args[1]);
 
 	sa.sa_sigaction = handler;
 	sa.sa_flags = SA_SIGINFO;

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   client_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/08 18:16:46 by omalovic          #+#    #+#             */
-/*   Updated: 2024/10/09 17:20:50 by omalovic         ###   ########.fr       */
+/*   Created: 2024/11/21 12:41:10 by alex              #+#    #+#             */
+/*   Updated: 2024/11/22 11:25:41 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "client.h"
 
-int	ft_atoi(const char *str)
+int	ft_atoi2(const char *str)
 {
 	unsigned long		num;
 	int					sign;
@@ -38,9 +38,25 @@ int	ft_atoi(const char *str)
 	return ((int)(num * sign));
 }
 
-/* int main()
+void	*ft_calloc2(size_t count, size_t size)
 {
-	const char *s = "            ++++++-+-+1234he;;p000";
-	int result = ft_atoi(s);
-	printf("%d\n", result);
-} */
+	size_t			total_size;
+	void			*ptr;
+	unsigned char	*byte_ptr;
+	size_t			i;
+
+	i = 0;
+	total_size = count * size;
+	ptr = (void *) malloc (total_size);
+	if (ptr == NULL)
+	{
+		return (NULL);
+	}
+	byte_ptr = ptr;
+	while (i < total_size)
+	{
+		byte_ptr[i] = '\0';
+		i++;
+	}
+	return (ptr);
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
+/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 13:27:44 by omalovic          #+#    #+#             */
-/*   Updated: 2024/10/22 14:21:55 by omalovic         ###   ########.fr       */
+/*   Updated: 2024/11/21 16:13:50 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,4 +30,4 @@ int	ft_printf(const char *str, ...)
 	printf("%d\n", ft_printf("%d\n", 10));
 	printf("%d\n", printf("%d\n", 10));
 	// printf("%d\n", ft_printf("\001\002\007\v\010\f\r\n"));
-} */
+} valgrind:*/

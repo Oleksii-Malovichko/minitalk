@@ -6,7 +6,7 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 21:07:08 by alex              #+#    #+#             */
-/*   Updated: 2024/11/20 19:30:00 by alex             ###   ########.fr       */
+/*   Updated: 2024/11/22 11:55:27 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,39 @@ int flag;
 #define WAIT_HANDSHAKE 0
 #define HANDLE_DATA 1
 
-void	stop_programm(int i)
+void	stop_programm(int i, t_server_state **state1)
 {
+	if (*state1)
+	{
+		free(*state1);
+		*state1 = NULL;
+	}
 	if (i == 0)
+	{
 		exit(EXIT_SUCCESS);
+	}
 	if (i == 1)
+	{
 		exit(EXIT_FAILURE);
+	}
 }
 
-void send_bit(int pid, int bit)
+void send_bit(t_server_state **state1, int pid, int bit)
 {
     if (bit == 0)
     {
         if (kill(pid, SIGUSR1) == -1)
-            return (stop_programm(1));
+            return (stop_programm(1, state1));
     }
     else
     {
         if (kill(pid, SIGUSR2) == -1)
-            return (stop_programm(1));
+            return (stop_programm(1, state1));
     }
     usleep(300);
 }
 
-void send_sig(int pid, char state)
+void send_sig(t_server_state **state1, int pid, char state)
 {
     int bit_index;
     int bit;
@@ -48,7 +57,7 @@ void send_sig(int pid, char state)
     while (bit_index < 8)
     {
         bit = (state >> bit_index) & 1;
-		send_bit(pid, bit);
+		send_bit(state1, pid, bit);
         bit_index++;
     }
 }
@@ -58,11 +67,11 @@ void	handle_signal_handshake(int sig, siginfo_t *info, void *context)
 	(void)context;
 	static t_server_state *state = NULL;
 	
-	if (state == NULL)
+	if (!state)
 	{
-		state = malloc(sizeof(t_server_state));
+		state = ft_calloc1(1, sizeof(t_server_state));
 		if (!state)
-			exit(EXIT_FAILURE);
+			stop_programm(1, &state);
 		state->bit_index = 0;
 		state->current_value = 0;
 		state->pid = info->si_pid;
@@ -73,7 +82,7 @@ void	handle_signal_handshake(int sig, siginfo_t *info, void *context)
 	if (state->bit_index == 8)
 	{
 		if (state->current_value == 0 && flag == 0)
-			send_sig(state->pid, 1);
+			send_sig(&state, state->pid, 1);
 		if (state->current_value == 2 && flag == 0)
 		{
 			flag = 1;

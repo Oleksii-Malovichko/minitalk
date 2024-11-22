@@ -1,58 +1,39 @@
-# Название исполняемых файлов
-CLIENT_NAME = client
-SERVER_NAME = server
+NAME1 = libftprintf.a
+NAME2 = client
+NAME3 = server
 
-# Директории для библиотек
-LIBFT_DIR = libft
-FT_PRINTF_DIR = ft_printf
+CC = cc 
+C_FLAGS = -Wall -Wextra -Werror
 
-# Компилятор и флаги
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I$(LIBFT_DIR) -I$(FT_PRINTF_DIR)
+SRCS1 = ft_printf/funcs.c ft_printf/funcs2.c ft_printf/main.c ft_printf/process_string.c ft_printf/process_string2.c
+SRCS2 = client.c client_utils.c 
+SRCS3 = server.c server_utils.c
 
-# Директория для объектных файлов
-OBJ_DIR = obj
+OBJS1 = $(SRCS1:.c=.o)
+OBJS2 = $(SRCS2:.c=.o)
+OBJS3 = $(SRCS3:.c=.o)
 
-# Исходные файлы для client и server
-CLIENT_SRC = client.c # client_utils.c (если есть)
-SERVER_SRC = server.c # server_utils.c (если есть)
 
-# Преобразуем исходники в объектные файлы
-CLIENT_OBJ = $(CLIENT_SRC:%.c=$(OBJ_DIR)/%.o)
-SERVER_OBJ = $(SERVER_SRC:%.c=$(OBJ_DIR)/%.o)
+all: $(NAME1) $(NAME2) $(NAME3)
 
-# Цель по умолчанию
-all: $(CLIENT_NAME) $(SERVER_NAME)
+$(NAME1): $(OBJS1) # создание библиотеки для printf
+	ar rcs $@ $^
 
-# Правило для создания client
-$(CLIENT_NAME): $(CLIENT_OBJ) $(LIBFT_DIR)/libft.a $(FT_PRINTF_DIR)/libftprintf.a
-	$(CC) $(CLIENT_OBJ) -L$(LIBFT_DIR) -lft -L$(FT_PRINTF_DIR) -lftprintf -o $(CLIENT_NAME)
+$(NAME2): $(OBJS2) $(NAME1)
+	$(CC) $(C_FLAGS) -o $(NAME2) $(OBJS2) -L. -lftprintf
 
-# Правило для создания server
-$(SERVER_NAME): $(SERVER_OBJ) $(LIBFT_DIR)/libft.a $(FT_PRINTF_DIR)/libftprintf.a
-	$(CC) $(SERVER_OBJ) -L$(LIBFT_DIR) -lft -L$(FT_PRINTF_DIR) -lftprintf -o $(SERVER_NAME)
+$(NAME3): $(OBJS3) $(NAME1)
+	$(CC) $(C_FLAGS) -o $(NAME3) $(OBJS3) -L. -lftprintf
 
-# Компиляция объектных файлов
-$(OBJ_DIR)/%.o: %.c
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c
+	$(CC) $(C_FLAGS) -Ift_printf -c $< -o $@
 
-# Правила для libft и ft_printf
-$(LIBFT_DIR)/libft.a:
-	$(MAKE) -C $(LIBFT_DIR)
-
-$(FT_PRINTF_DIR)/libftprintf.a:
-	$(MAKE) -C $(FT_PRINTF_DIR)
-
-# Очистка
 clean:
-	$(MAKE) -C $(LIBFT_DIR) clean
-	$(MAKE) -C $(FT_PRINTF_DIR) clean
-	rm -rf $(OBJ_DIR)
+	rm -f $(OBJS1) $(OBJS2) $(OBJS3) 
 
 fclean: clean
-	$(MAKE) -C $(LIBFT_DIR) fclean
-	$(MAKE) -C $(FT_PRINTF_DIR) fclean
-	rm -f $(CLIENT_NAME) $(SERVER_NAME)
+	rm -f $(NAME1) $(NAME2) $(NAME3)
 
 re: fclean all
+
+.PHONY: all clean fclean re
