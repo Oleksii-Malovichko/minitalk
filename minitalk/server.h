@@ -6,7 +6,7 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 21:06:31 by alex              #+#    #+#             */
-/*   Updated: 2024/11/22 11:25:58 by alex             ###   ########.fr       */
+/*   Updated: 2024/11/22 11:59:42 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	*ft_calloc1(size_t count, size_t size);
 
 typedef struct s_server_state
 {
-	int	flag;
 	int	bit_index;		// Текущий индекс бита
 	int	current_value;	// Собранное значение
 	int pid;
+	struct s_server_state *next;
 } t_server_state;
 
 typedef enum

@@ -6,13 +6,13 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 21:06:59 by alex              #+#    #+#             */
-/*   Updated: 2024/11/22 11:24:53 by alex             ###   ########.fr       */
+/*   Updated: 2024/11/22 18:09:20 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-volatile int flag;
+volatile sig_atomic_t ack_received = 0;
 
 void	stop_programm(int i)
 {
@@ -20,6 +20,19 @@ void	stop_programm(int i)
 		exit(EXIT_SUCCESS);
 	if (i == 1)
 		exit(EXIT_FAILURE);
+}
+
+void	handle_ack(int sig)
+{
+	(void)sig;
+	ack_received = 1;
+}
+
+void	wait_for_ack(void)
+{
+	while (!ack_received)
+		pause();
+	ack_received = 0;
 }
 
 void send_bit(int pid, int bit)
@@ -34,7 +47,7 @@ void send_bit(int pid, int bit)
         if (kill(pid, SIGUSR2) == -1)
             stop_programm(1);
     }
-    usleep(300);
+    wait_for_ack();
 }
 
 void send_char(int pid, char c)
@@ -64,66 +77,18 @@ void	work_str(int pid, char *str)
 	exit(EXIT_SUCCESS);
 }
 
-void send_sig(int pid, char state)
-{
-    int bit_index;
-    int bit;
-
-    bit_index = 0;
-    while (bit_index < 8)
-    {
-        bit = (state >> bit_index) & 1;
-		send_bit(pid, bit);
-        bit_index++;
-    }
-}
-
-void	handler(int sig, siginfo_t *info, void *context)
-{
-	(void)context;
-	static t_server_state *state = NULL;
-	
-	if (state == NULL)
-	{
-		state = ft_calloc2(1, sizeof(t_server_state));
-		if (!state)
-			exit(EXIT_FAILURE);
-		state->bit_index = 0;
-		state->current_value = 0;
-		state->pid = info->si_pid;
-	}
-	if (sig == SIGUSR2)
-		state->current_value |= (1 << state->bit_index);
-	state->bit_index++;
-	if (state->bit_index == 8)
-	{
-		if (state->current_value == 1)
-			send_sig(state->pid, 2);
-		flag = 1;
-	}
-}
-
 int main(int n, char *args[])
 {
 	int pid;
-	struct sigaction sa;
 	
-	flag = 0;
 	if (n != 3)
-	{
 		stop_programm(1);
-		return (1);
-	}
 	pid = ft_atoi2(args[1]);
-
-	sa.sa_sigaction = handler;
-	sa.sa_flags = SA_SIGINFO;
+	struct sigaction sa = {0};
+	sa.sa_handler = handle_ack;
 	sigemptyset(&sa.sa_mask);
-	if (sigaction(SIGUSR1, &sa, NULL) == -1 || sigaction(SIGUSR2, &sa, NULL) == -1)
-		return (EXIT_FAILURE);
-	send_sig(pid, 0);
-	while (flag == 0)
-		pause();
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+        return EXIT_FAILURE;
 	work_str(pid, args[2]);
 	return (0);
 }

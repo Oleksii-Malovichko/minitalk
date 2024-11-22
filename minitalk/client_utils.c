@@ -6,7 +6,7 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:41:10 by alex              #+#    #+#             */
-/*   Updated: 2024/11/22 11:25:41 by alex             ###   ########.fr       */
+/*   Updated: 2024/11/22 14:11:03 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,18 @@ int	ft_atoi2(const char *str)
 		i++;
 	}
 	return ((int)(num * sign));
+}
+
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
 }
 
 void	*ft_calloc2(size_t count, size_t size)
