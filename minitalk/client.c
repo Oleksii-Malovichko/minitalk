@@ -6,7 +6,7 @@
 /*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 21:06:59 by alex              #+#    #+#             */
-/*   Updated: 2024/11/22 18:09:20 by alex             ###   ########.fr       */
+/*   Updated: 2024/11/23 19:36:34 by alex             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int main(int n, char *args[])
 		stop_programm(1);
 	pid = ft_atoi2(args[1]);
 	struct sigaction sa = {0};
+	sa.sa_flags = 0;
 	sa.sa_handler = handle_ack;
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
